@@ -1,11 +1,11 @@
 package lotto;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class LottoTest {
     @Test
@@ -21,5 +21,33 @@ class LottoTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    // TODO: 추가 기능 구현에 따른 테스트 코드 작성
+    @Test
+    void 입력받은_금액이_0보다_같거나_작으면_예외가_발생한다() {
+        String money = "-1000";
+        LottoManager lottoManager = new LottoManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lottoManager.validateReceivedMoney(money);
+        });
+    }
+
+    @Test
+    void 입력받은_금액이_1000원단위가_아니면_예외가_발생한다() {
+        String money = "1500";
+        LottoManager lottoManager = new LottoManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lottoManager.validateReceivedMoney(money);
+        });
+    }
+
+    @Test
+    void 입력받은_금액이_숫자가_아니면_예외가_발생한다() {
+        String money = "abc";
+        LottoManager lottoManager = new LottoManager();
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lottoManager.validateReceivedMoney(money);
+        });
+    }
 }

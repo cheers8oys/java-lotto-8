@@ -4,9 +4,9 @@ import camp.nextstep.edu.missionutils.Console;
 
 public class InputView {
 
-    public int readLottoPurchasePrice() {
+    public String readLottoPurchasePrice() {
         System.out.println("구입 금액을 입력해 주세요.");
-        return Integer.parseInt(Console.readLine());
+        return Console.readLine();
     }
 
     public String readLottoWinningNumber() {
@@ -14,9 +14,9 @@ public class InputView {
         return Console.readLine();
     }
 
-    public int readBonusNumber() {
+    public String readBonusNumber() {
         System.out.println("보너스 번호를 입력해 주세요.");
-        return Integer.parseInt(Console.readLine());
+        return Console.readLine();
     }
 
 }
