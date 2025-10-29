@@ -1,6 +1,7 @@
 package lotto;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
@@ -24,30 +25,37 @@ class LottoTest {
     @Test
     void 입력받은_금액이_0보다_같거나_작으면_예외가_발생한다() {
         String money = "-1000";
-        LottoManager lottoManager = new LottoManager();
+        LottoService lottoService = new LottoService();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            lottoManager.validateReceivedMoney(money);
+            lottoService.validateReceivedMoney(money);
         });
     }
 
     @Test
     void 입력받은_금액이_1000원단위가_아니면_예외가_발생한다() {
         String money = "1500";
-        LottoManager lottoManager = new LottoManager();
+        LottoService lottoService = new LottoService();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            lottoManager.validateReceivedMoney(money);
+            lottoService.validateReceivedMoney(money);
         });
     }
 
     @Test
     void 입력받은_금액이_숫자가_아니면_예외가_발생한다() {
         String money = "abc";
-        LottoManager lottoManager = new LottoManager();
+        LottoService lottoService = new LottoService();
 
         assertThrows(IllegalArgumentException.class, () -> {
-            lottoManager.validateReceivedMoney(money);
+            lottoService.validateReceivedMoney(money);
         });
+    }
+
+    @Test
+    void 금액만큼_해당하는_로또티켓수_발행한다() {
+        LottoService lottoService = new LottoService();
+        int attemptCount = lottoService.validateReceivedMoney("5000");
+        assertEquals(5, lottoService.provideLottoTickets(attemptCount).size());
     }
 }
