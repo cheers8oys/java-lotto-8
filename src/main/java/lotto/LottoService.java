@@ -5,10 +5,8 @@ import java.util.List;
 
 public class LottoService {
 
-    private static int parsedReceivedMoney;
-
     public int validateReceivedMoney(String receivedMoney) {
-
+        int parsedReceivedMoney;
         try {
             parsedReceivedMoney = Integer.parseInt(receivedMoney);
         } catch (NumberFormatException e) {
