@@ -23,7 +23,7 @@ public class LottoService {
 
     public List<Lotto> provideLottoTickets(int attemptCount) {
         if (attemptCount <= 0) {
-            throw new IllegalArgumentException("[ERROR] 로또 수는 1개 이상이어야 합니다.");
+            throw new IllegalArgumentException("[ERROR] 로또는 1개 이상이어야 합니다.");
         }
         LottoNumberGenerator generator = new LottoNumberGenerator();
         List<Lotto> lottoList = new ArrayList<>();

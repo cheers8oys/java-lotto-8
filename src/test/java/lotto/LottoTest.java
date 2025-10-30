@@ -4,9 +4,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class LottoTest {
     @Test
@@ -57,5 +60,37 @@ class LottoTest {
         LottoService lottoService = new LottoService();
         int attemptCount = lottoService.validateReceivedMoney("5000");
         assertEquals(5, lottoService.provideLottoTickets(attemptCount).size());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1})
+    void 복권_발급_요청_숫자가_0이거나_0보다_작을경우_예외가_발생한다(int attemptCount) {
+        LottoService lottoService = new LottoService();
+        assertThrows(IllegalArgumentException.class, () -> {
+            lottoService.provideLottoTickets(attemptCount);
+        });
+    }
+
+    @Test
+    void 로또번호리스트가_null일_경우_예외가_발생한다() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Lotto(null);  // null 리스트로 생성 시도
+        });
+    }
+
+    @Test
+    void 로또목록이_비었을_경우_예외가_발생한다() {
+        List<Lotto> lottoes = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class, () -> {
+            new LottoList(lottoes);
+        });
+    }
+
+    @Test
+    void 로또목록에_null로또를_추가하면_예외가_발생한다() {
+        LottoList lottoList = new LottoList(List.of(new Lotto(List.of(1,2,3,4,5,6))));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            lottoList.add(null);
+        });
     }
 }
