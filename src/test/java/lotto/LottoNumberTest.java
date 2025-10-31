@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class LottoNumberTest {
 
@@ -36,6 +38,24 @@ public class LottoNumberTest {
     @Test
     public void 유효하지_않은_입력값이_있으면_예외가_발생한다() {
         assertThatThrownBy(() -> new WinningNumber("1,2,3,4,5,ㅁ"))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    public void 보너스번호와_당첨번호가_중복이_있으면_예외가_발생한다() {
+        String intputBonusNumber = "6";
+        WinningNumber winningNumber = new WinningNumber("1,2,3,4,5,6");
+        BonusNumber bonusNumber = new BonusNumber(winningNumber);
+        assertThatThrownBy(() -> bonusNumber.validate(intputBonusNumber))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"a", "ㅁ", " ", "", "46", "0", "-1", })
+    public void 보너스번호에_유효하지_않은_입력이_있으면_예외가_발생한다(String inputValue) {
+        WinningNumber winningNumber = new WinningNumber("1,2,3,4,5,6");
+        BonusNumber bonusNumber = new BonusNumber(winningNumber);
+        assertThatThrownBy(() -> bonusNumber.validate(inputValue))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
