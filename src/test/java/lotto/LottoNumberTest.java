@@ -17,29 +17,25 @@ public class LottoNumberTest {
 
     @Test
     public void 당첨번호_6자리_숫자_아니면_예외가_발생한다() {
-        WinningNumber winningNumber = new WinningNumber();
-        assertThatThrownBy(() -> winningNumber.validate("1,2,3,4,5,6,7"))
+        assertThatThrownBy(() -> new WinningNumber("1,2,3,4,5,6,7"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void 당첨번호_중복이_있으면_예외가_발생한다() {
-        WinningNumber winningNumber = new WinningNumber();
-        assertThatThrownBy(() -> winningNumber.validate("1,2,3,5,5,6"))
+        assertThatThrownBy(() -> new WinningNumber("1,2,3,4,5,5"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void 당첨번호_범위에_해당하지않는_수가_있으면_예외가_발생한다() {
-        WinningNumber winningNumber = new WinningNumber();
-        assertThatThrownBy(() -> winningNumber.validate("1,2,3,4,5,46"))
+        assertThatThrownBy(() -> new WinningNumber("1,2,3,4,5,46"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
     public void 유효하지_않은_입력값이_있으면_예외가_발생한다() {
-        WinningNumber winningNumber = new WinningNumber();
-        assertThatThrownBy(() -> winningNumber.validate("1,2,3,4,5,ㅁ"))
+        assertThatThrownBy(() -> new WinningNumber("1,2,3,4,5,ㅁ"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }

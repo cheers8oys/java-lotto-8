@@ -8,7 +8,17 @@ import java.util.stream.Collectors;
 
 public class WinningNumber {
 
-    public List<Integer> validate(String inputValue) {
+    private final List<Integer> numbers;
+
+    public WinningNumber(String inputValue) {
+        this.numbers = validate(inputValue);
+    }
+
+    public List<Integer> getNumbers() {
+        return List.copyOf(numbers);
+    }
+
+    private List<Integer> validate(String inputValue) {
         List<Integer> numbers = parseAndValidate(inputValue);
         validateDuplicates(numbers);
         validateNumberRangeAndCount(numbers);
