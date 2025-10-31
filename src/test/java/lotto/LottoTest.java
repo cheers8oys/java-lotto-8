@@ -26,6 +26,12 @@ class LottoTest {
     }
 
     @Test
+    void 로또_번호에_유효하지_않은_입력이_있으면_예외가_발생한다() {
+        assertThatThrownBy(() -> new Lotto(List.of(1, 2, 3, 4, 46, 5)))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void 입력받은_금액이_0보다_같거나_작으면_예외가_발생한다() {
         String money = "-1000";
         LottoService lottoService = new LottoService();
