@@ -2,6 +2,7 @@ package lotto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class LottoService {
 
@@ -33,5 +34,15 @@ public class LottoService {
             lottoList.add(lotto);
         }
         return lottoList;
+    }
+
+    public double calculateProfitRate(Map<LottoRank, Integer> rankCount, int purchaseCount, int lottoPrice) {
+        long totalWinningPrize = rankCount.entrySet().stream()
+                .mapToLong(e -> (long) e.getKey().getPrize() * e.getValue())
+                .sum();
+
+        long totalCost = (long) purchaseCount * lottoPrice;
+        double profitRate = (double) totalWinningPrize / totalCost * 100;
+        return Math.round(profitRate * 100) / 100.0;
     }
 }

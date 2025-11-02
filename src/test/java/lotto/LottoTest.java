@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -98,5 +99,26 @@ class LottoTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             lottoList.add(null);
         });
+    }
+
+    @Test
+    void 총상금과_구입_금액으로_수익률_계산_한다() {
+        LottoService service = new LottoService();
+
+        Map<LottoRank, Integer> rankCount = Map.of(
+                LottoRank.THIRD, 1,
+                LottoRank.FOURTH, 0,
+                LottoRank.FIFTH, 0,
+                LottoRank.SECOND, 0,
+                LottoRank.FIRST, 0,
+                LottoRank.NONE, 7
+        );
+        int purchaseCount = 8;
+        int lottoPrice = 1000;
+
+        double result = service.calculateProfitRate(rankCount, purchaseCount, lottoPrice);
+        double expectedProfitRate = Math.round((1_500_000.0 / 8000.0 * 100) * 100) / 100.0;
+
+        assertEquals(result, expectedProfitRate);
     }
 }
