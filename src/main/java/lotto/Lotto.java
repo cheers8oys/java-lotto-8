@@ -14,6 +14,10 @@ public class Lotto {
         this.numbers = numbers;
     }
 
+    public List<Integer> getNumbers() {
+        return numbers;
+    }
+
     private void validate(List<Integer> numbers) {
         if (numbers == null) {
             throw new IllegalArgumentException("[ERROR] 로또 번호 리스트는 NULL일 수 없습니다.");
