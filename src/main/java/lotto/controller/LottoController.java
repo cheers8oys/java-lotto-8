@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lotto.BonusNumber;
+import lotto.InputValidator;
 import lotto.Lotto;
 import lotto.LottoNumberMatcher;
 import lotto.LottoRank;
@@ -15,7 +16,6 @@ import lotto.view.OutputView;
 public class LottoController {
 
     private static final int LOTTO_PRICE = 1000;
-    private static final String ERROR_MESSAGE = "[ERROR]";
 
     private final InputView inputView;
     private final OutputView outputView;
@@ -29,31 +29,48 @@ public class LottoController {
     public void run() {
 
         int purchaseCount = getPurchaseCount();
+        List<Lotto> lottoList = getLottoList(purchaseCount);
 
-        List<Lotto> lottoList = lottoService.provideLottoTickets(purchaseCount);
-        outputView.printLottoNumbers(lottoList);
+        WinningNumber winningNumber = getWinningNumber();
+        int bonusNumber = getBonusNumber(winningNumber);
 
-        WinningNumber winningNumber = new WinningNumber(inputView.readLottoWinningNumber());
-
-        BonusNumber bonusNumber = new BonusNumber(winningNumber);
-        int bonus = bonusNumber.validate(inputView.readBonusNumber());
-
-        Map<LottoRank, Integer> rankCount = getLottoRankIntegerMap(lottoList, winningNumber, bonus);
-
+        Map<LottoRank, Integer> rankCount = getLottoRankIntegerMap(lottoList, winningNumber, bonusNumber);
         outputView.printStatistics(rankCount);
 
         double profitRate = lottoService.calculateProfitRate(rankCount, purchaseCount, LOTTO_PRICE);
         outputView.printProfitRate(profitRate);
     }
 
+    private int getBonusNumber(WinningNumber winningNumber) {
+        int bonus = new InputValidator<>(
+                () -> new BonusNumber(winningNumber).validate(inputView.readBonusNumber()),
+                outputView
+        ).validate();
+        return bonus;
+    }
+
+    private WinningNumber getWinningNumber() {
+        WinningNumber winningNumber = new InputValidator<>(
+                () -> new WinningNumber(inputView.readLottoWinningNumber()),
+                outputView
+        ).validate();
+        return winningNumber;
+    }
+
+    private List<Lotto> getLottoList(int purchaseCount) {
+        List<Lotto> lottoList = new InputValidator<>(
+                () -> lottoService.provideLottoTickets(purchaseCount),
+                outputView
+        ).validate();
+        outputView.printLottoNumbers(lottoList);
+        return lottoList;
+    }
+
     private int getPurchaseCount() {
-        int purchaseCount;
-        try {
-            purchaseCount = lottoService.validateReceivedMoney(inputView.readLottoPurchasePrice());
-        } catch (IllegalArgumentException e)  {
-            System.out.println(ERROR_MESSAGE);
-            throw new IllegalArgumentException(ERROR_MESSAGE);
-        }
+        int purchaseCount = new InputValidator<>(
+                () -> lottoService.validateReceivedMoney(inputView.readLottoPurchasePrice()),
+                outputView
+        ).validate();
         outputView.printPurchaseCount(purchaseCount);
         return purchaseCount;
     }

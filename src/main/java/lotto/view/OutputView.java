@@ -7,6 +7,13 @@ import lotto.LottoRank;
 
 public class OutputView {
 
+    public void printError(String errorMessage) {
+        if (errorMessage.startsWith("[ERROR]")) {
+            System.out.println(errorMessage);
+        }
+        System.out.println("[ERROR] " + errorMessage);
+    }
+
     public void printPurchaseCount(int purchaseCount) {
         System.out.printf("%d개를 구매했습니다.%n", purchaseCount);
     }
