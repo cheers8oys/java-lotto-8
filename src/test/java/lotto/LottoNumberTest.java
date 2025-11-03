@@ -3,6 +3,9 @@ package lotto;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import lotto.model.BonusNumber;
+import lotto.model.LottoNumberGenerator;
+import lotto.model.WinningNumber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

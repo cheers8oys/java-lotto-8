@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import lotto.model.BonusNumber;
+import lotto.model.LottoNumberMatcher;
+import lotto.model.WinningNumber;
 import org.junit.jupiter.api.Test;
 
 public class LottoNumberMatcherTest {
