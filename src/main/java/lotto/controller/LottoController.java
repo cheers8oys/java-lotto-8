@@ -1,11 +1,11 @@
 package lotto.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import lotto.model.BonusNumber;
 import lotto.model.InputValidator;
 import lotto.model.Lotto;
+import lotto.model.LottoList;
 import lotto.model.LottoNumberMatcher;
 import lotto.model.LottoRank;
 import lotto.model.LottoService;
@@ -29,7 +29,7 @@ public class LottoController {
     public void run() {
 
         int purchaseCount = getPurchaseCount();
-        List<Lotto> lottoList = getLottoList(purchaseCount);
+        LottoList lottoList = getLottoList(purchaseCount);
 
         WinningNumber winningNumber = getWinningNumber();
         int bonusNumber = getBonusNumber(winningNumber);
@@ -57,12 +57,12 @@ public class LottoController {
         return winningNumber;
     }
 
-    private List<Lotto> getLottoList(int purchaseCount) {
-        List<Lotto> lottoList = new InputValidator<>(
+    private LottoList getLottoList(int purchaseCount) {
+        LottoList lottoList = new InputValidator<>(
                 () -> lottoService.provideLottoTickets(purchaseCount),
                 outputView
         ).validate();
-        outputView.printLottoNumbers(lottoList);
+        outputView.printLottoNumbers(lottoList.getLottos());
         return lottoList;
     }
 
@@ -75,11 +75,14 @@ public class LottoController {
         return purchaseCount;
     }
 
-    private static Map<LottoRank, Integer> getLottoRankIntegerMap(List<Lotto> lottoList, WinningNumber winningNumber,
-                                                                  int bonus) {
+    private static Map<LottoRank, Integer> getLottoRankIntegerMap(LottoList lottoList, WinningNumber winningNumber, int bonus) {
         Map<LottoRank, Integer> rankCount = new HashMap<>();
-        for (Lotto lotto : lottoList) {
-            LottoNumberMatcher matcher = new LottoNumberMatcher(lotto.getNumbers(), winningNumber.getNumbers(), bonus);
+        for (Lotto lotto : lottoList.getLottos()) {
+            LottoNumberMatcher matcher = new LottoNumberMatcher(
+                    lotto.getNumbers(),
+                    winningNumber.getNumbers(),
+                    bonus
+            );
             int matchedCount = matcher.countMatchingNumbers();
             boolean bonusMatched = matcher.isBonusNumberMatched();
             LottoRank rank = LottoRank.from(matchedCount, bonusMatched);

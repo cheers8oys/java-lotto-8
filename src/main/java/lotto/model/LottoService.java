@@ -22,7 +22,7 @@ public class LottoService {
         return parsedReceivedMoney / 1000;
     }
 
-    public List<Lotto> provideLottoTickets(int attemptCount) {
+    public LottoList provideLottoTickets(int attemptCount) {
         if (attemptCount <= 0) {
             throw new IllegalArgumentException("[ERROR] 로또는 1개 이상이어야 합니다.");
         }
@@ -33,7 +33,7 @@ public class LottoService {
             Lotto lotto = new Lotto(numbers);
             lottoList.add(lotto);
         }
-        return lottoList;
+        return new LottoList(lottoList);
     }
 
     public double calculateProfitRate(Map<LottoRank, Integer> rankCount, int purchaseCount, int lottoPrice) {
